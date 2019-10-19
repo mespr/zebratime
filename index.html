@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zebra Time</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        :root {
+            --bg-color:#d1d1de;
+            --txt-color:#1d1d1f;
+            --spacer:20px;
+        }
+        body {
+            background-color: var(--bg-color);
+            color:var(--txt-color);
+            font-family: poppins-semibold,poppins,sans-serif;
+            font-size: 22px;
+            line-height: 1.5;
+            width:100%;
+            height:100%;
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
+        }
+        #content-container {
+            position:absolute;
+            left:0;
+            right:0;
+            top:60px;
+            display:flex;
+            flex-direction: column;
+        }
+        #content-header {
+            position:fixed;
+            display:flex;
+            left:0;
+            right:0;
+            top:0;
+            align-items: center;
+            height:60px;
+            background-color: var(--txt-color);
+            color: var(--bg-color);
+            padding:10px 15%;
+            z-index:10;
+        }
+        #header-time {
+            flex:1 0 auto;
+            text-align: right;
+            font-size:1.5em;
+        }
+        #header-title {
+            flex:1 0 auto;
+            font-size:1.5em;
+        }
+        .page {
+            display:flex;
+            flex-direction:column;
+            flex:auto;
+            align-content:space-evenly;
+            padding:60px 15%;
+        }
+        .page-title {
+            border-top:1px solid black;
+        }
+        .horizontal {
+            flex-direction:row;
+        }
+        .page-box {
+            flex:1 1;
+        }
+        .strong {
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+<section id="content-header">
+    <div id="header-title">Zebra Time</div>
+    <div id="header-time"></div>
+</section>
+<section id="content-container">
+    <section class="page">
+        <p>Why is it <span class="zebra-hour strong"></span> o'clock?
+            Because it's <span class="zulu-hour strong"></span> o'clock
+            GMT (zulu, really).</p>
+        <p>The <span class="strong">time of day</span> means both where the sun
+            is relative to you, and a moment in the progression of time.
+            Zebra time allows people a manner for expressing
+            universal time so we can differentiate the two.</p>
+        <p>There are ISO standards for this using GMT offset codes, but it's
+        not particularly friendly and not designed for use conversationally.</p>
+        <p><span class="zulu-ampm-hour strong"></span> means something to you.
+            I'm guessing <span class="zulu-activity"></span>. Your local time is
+            <span class="local-ampm-hour"></span>. If you happen to live in London that
+            might be the same or one hour off. If you happen to live in Sydney it's
+            going to be some 10 hours different.</p>
+        <p>We are inured to how complicated this is. "Is that your 2 o'clock or mine?"
+            Meanwhile, nearly all computers everywhere agree that now is
+        <span class="computer-time strong"></span>.</p>
+        <p>If you want to place a call from Los Angeles to Berlin, you might turn
+            to the internet to tell what time it is for the other person. Computer
+            processing hides the complexity of calculating timezones and daylight saving
+            rules. With zebra time we dispense with that. It is the same time everywhere,
+            and, we can also still plan dinner for 7PM</p>
+    </section>
+    <section id="wall-clock" class="page horizontal">
+        <section class="page-box" style="
+            background-image:url(img/zebra_clock.png);
+            background-size:contain;
+            background-repeat:no-repeat;
+            flex-grow:0.5;
+            margin:30px 30px 0 0">
+        </section>
+        <section class="page-box">
+            <p>This clock is handmade, built with a plastic disc and a 24 clock
+                mechanism. The face was drawn with dry erase markers. I've made half
+                a dozen and installed them various place.</p>
+            <p>The colors indicate the relative active time of people in
+                the world's populous zones. It's not intended to be very accurate. It just
+                gives a cue as to who might be up and about.</p>
+            <p>The face has evolved. Another version uses capital cities around the
+                perimeter.</p>
+            <p>The first analog clock was made with a paper plate
+                and a reversed azimuthal map. Unless I flipped it as well, the zebra
+            hours had to be offset by 12. Backwards and upside down was exceedingly
+            confusing.</p>
+        </section>
+    </section>
+</section>
+<script type="module">
+    import ZebraTime from "./index.mjs";
+    document.addEventListener("DOMContentLoaded", function() {
+        console.log('what');
+        let headerTime = document.getElementById("header-time");
+        let zebra = ZebraTime();
+        headerTime.append(zebra.timeElement());
+        document.querySelector(".zebra-hour").textContent = zebra.hour;
+        document.querySelector(".zulu-hour").textContent = zebra.date.getUTCHours();
+        document.querySelector(".zulu-ampm-hour").textContent = ampm(zebra.date.getUTCHours());
+        document.querySelector(".zulu-activity").textContent = activity(zebra.date.getUTCHours());
+        document.querySelector(".local-ampm-hour").textContent = ampm(zebra.date.getHours());
+        document.querySelector(".computer-time").textContent = zebra.date.getTime();
+    });
+    function ampm(h) {
+        let ampm = h>11?"PM":"AM";
+        h = h > 12?h-12:h;
+        if (h === 0) h = 12;
+        return h+ampm;
+    }
+    function activity(h) {
+        if (h <= 5) return "night time";
+        else if (h <= 7) return "morning time";
+        else if (h <= 8) return "breakfast time";
+        else if (h <= 12) return "work time";
+        else if (h <= 13) return "lunch time";
+        else if (h <= 18) return "work time";
+        else if (h <= 20) return "dinner time";
+        else if (h <= 22) return "evening time";
+        else return "night time";
+    }
+</script>
+</body>
+</html>

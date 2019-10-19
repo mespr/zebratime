@@ -1,0 +1,27 @@
+{
+  "name": "zebratime",
+  "version": "1.0.0",
+  "description": "Zulu time for humans",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "node --experimental-modules test/test.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mespr/zebratime.git"
+  },
+  "keywords": [
+    "time",
+    "gmt",
+    "zulu",
+    "24hour",
+    "clock"
+  ],
+  "author": "Michael Sprague",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mespr/zebratime/issues"
+  },
+  "homepage": "https://github.com/mespr/zebratime#readme",
+  "devDependencies": {}
+}
