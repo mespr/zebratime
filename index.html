@@ -6,15 +6,21 @@
     <style>
         :root {
             --bg-color:#d1d1de;
+            --bg-hilite:rgba(209,209,222,0.1);
             --txt-color:#1d1d1f;
+            --txt-light-color:#2d2d2f;
+            --txt-box:rgba(29,29,31,0.2);
             --spacer:20px;
+        }
+        html {
+            scroll-behavior: smooth;
         }
         body {
             background-color: var(--bg-color);
             color:var(--txt-color);
             font-family: poppins-semibold,poppins,sans-serif;
             font-size: 22px;
-            line-height: 1.5;
+            line-height: 1.3;
             width:100%;
             height:100%;
             margin:0;
@@ -22,10 +28,10 @@
             box-sizing: border-box;
         }
         #content-container {
-            position:absolute;
+            position:relative;
             left:0;
             right:0;
-            top:60px;
+            top:100px;
             display:flex;
             flex-direction: column;
         }
@@ -51,15 +57,33 @@
             flex:1 0 auto;
             font-size:1.5em;
         }
+        #header-menu > * {
+            font-size:.8em;
+            padding:20px;
+            cursor:pointer;
+            color:var(--bg-color) !important;
+        }
+        #header-menu > *:hover {
+            text-decoration: underline;
+        }
         .page {
+            position:relative;
             display:flex;
             flex-direction:column;
             flex:auto;
             align-content:space-evenly;
-            padding:60px 15%;
+            padding:130px 15% 30px 15%;
+            margin-top:-100px;
         }
         .page-title {
             border-top:1px solid black;
+            margin:0 15%;
+            line-height:1;
+        }
+        .page-title > span {
+            color:var(--bg-color);
+            background-color:var(--txt-color);
+            padding:0 20px;
         }
         .horizontal {
             flex-direction:row;
@@ -70,39 +94,80 @@
         .strong {
             font-weight:bold;
         }
+        pre {
+            font-size:0.8em;
+            background-color:var(--txt-box);
+            padding:0 10px;
+        }
+        p {
+            margin-block-start:.5em;
+            margin-block-end:.5em;
+        }
     </style>
 </head>
 <body>
 <section id="content-header">
     <div id="header-title">Zebra Time</div>
+    <div id="header-menu">
+        <a href="#home">[ home ]</a>
+        <a href="#code">[ code ]</a>
+        <a href="#clock">[ clock ]</a>
+    </div>
     <div id="header-time"></div>
 </section>
 <section id="content-container">
-    <section class="page">
+    <section id="home" class="page">
         <p>Why is it <span class="zebra-hour strong"></span> o'clock?
             Because it's <span class="zulu-hour strong"></span> o'clock
             GMT (zulu, really).</p>
         <p>The <span class="strong">time of day</span> means both where the sun
             is relative to you, and a moment in the progression of time.
-            Zebra time allows people a manner for expressing
+            Zebra time allows people an alternate manner of expressing
             universal time so we can differentiate the two.</p>
-        <p>There are ISO standards for this using GMT offset codes, but it's
-        not particularly friendly and not designed for use conversationally.</p>
         <p><span class="zulu-ampm-hour strong"></span> means something to you.
             I'm guessing <span class="zulu-activity"></span>. Your local time is
             <span class="local-ampm-hour"></span>. If you happen to live in London that
             might be the same or one hour off. If you happen to live in Sydney it's
-            going to be some 10 hours different.</p>
+            going to be some 9 or 10 hours different.</p>
         <p>We are inured to how complicated this is. "Is that your 2 o'clock or mine?"
             Meanwhile, nearly all computers everywhere agree that now is
         <span class="computer-time strong"></span>.</p>
-        <p>If you want to place a call from Los Angeles to Berlin, you might turn
-            to the internet to tell what time it is for the other person. Computer
-            processing hides the complexity of calculating timezones and daylight saving
-            rules. With zebra time we dispense with that. It is the same time everywhere,
-            and, we can also still plan dinner for 7PM</p>
+        <p>If you want to place a call from Los Angeles to Berlin, you might search
+            the internet to discover what time it is for the other person. Computer
+            processing hides the complexity of calculating offsets for both locations and
+            possible daylight saving rules. With zebra time we dispense with that.
+            It is the same time everywhere, and, we can also still plan dinner at 7:30
+            with our family.</p>
     </section>
-    <section id="wall-clock" class="page horizontal">
+    <section id="code-title" class="page-title"><span>code</span></section>
+    <section id="code" class="page">
+        <p>ZebraTime is free and open source. In the loftiest of ideals, it
+        is a project to give people a simple language for universal time so
+        we can stop with the timezone date math.</p>
+        <p>This site and a basic ES6 module are available on github.com and
+        npmjs.com</p>
+        <pre><code>
+npm i zebratime
+        </code></pre>
+        <pre><code>
+&lt;script type='module' src='zebratime.mjs'>&lt;script>
+        </code></pre>
+        <p>Invoke ZebraTime() to get an instance based on the current time or
+        pass a date object as the first argument</p>
+        <pre><code>
+let zebra = ZebraTime();
+console.log("zebra time is "+zebra);
+// zebra time is A:10
+console.log("zebra time is "+zebra.precision("second"));
+// zebra time is A:10:45
+        </code></pre>
+        For a DOM element that presents the time and stays current, use timeElement.
+        <pre><code>
+myElement.append(ZebraTime().timeElement());
+        </code></pre>
+    </section>
+    <section id="wall-clock-title" class="page-title"><span>clock</span></section>
+    <section id="clock" class="page horizontal">
         <section class="page-box" style="
             background-image:url(img/zebra_clock.png);
             background-size:contain;
@@ -127,9 +192,8 @@
     </section>
 </section>
 <script type="module">
-    import ZebraTime from "./index.mjs";
+    import ZebraTime from "./zebratime.mjs";
     document.addEventListener("DOMContentLoaded", function() {
-        console.log('what');
         let headerTime = document.getElementById("header-time");
         let zebra = ZebraTime();
         headerTime.append(zebra.timeElement());

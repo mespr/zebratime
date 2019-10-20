@@ -2,7 +2,7 @@
   "name": "zebratime",
   "version": "1.0.0",
   "description": "Zulu time for humans",
-  "main": "index.mjs",
+  "main": "zebratime.mjs",
   "scripts": {
     "test": "node --experimental-modules test/test.mjs"
   },

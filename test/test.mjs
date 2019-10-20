@@ -2,7 +2,7 @@
  * Raw ESM test script. Expects node --experimental-modules
  */
 
-import ZebraTime from "../index";
+import ZebraTime from "../zebratime.mjs";
 const zhours = "ABCDEFGHIJKLMNOPQRSTUVWX";
 
 test('default time should have a letter for current hour and show minutes', function() {
