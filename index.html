@@ -148,13 +148,13 @@
             <a href="https://github.com/mespr/zebratime">github.com/mespr/zebratime</a>
             and npmjs.com</p>
         <p><i>* the code is not YET on npmjs but can be downloaded from
-            here <a href="zebratime.mjs">zebratime.mjs</a></i>. It runs the
+            here <a href="zebratime.js">zebratime.js</a></i>. It runs the
             clock on this page but doesn't do much else.</p>
         <pre><code>
 npm i zebratime
         </code></pre>
         <pre><code>
-&lt;script type='module' src='zebratime.mjs'>&lt;script>
+&lt;script type='module' src='zebratime.js'>&lt;script>
         </code></pre>
         <p>Invoke ZebraTime() to get an instance based on the current time or
         pass a date object as the first argument</p>
@@ -196,7 +196,7 @@ myElement.append(ZebraTime().timeElement());
     </section>
 </section>
 <script type="module">
-    import ZebraTime from "./zebratime.mjs";
+    import ZebraTime from "./zebratime.js";
     document.addEventListener("DOMContentLoaded", function() {
         let headerTime = document.getElementById("header-time");
         let zebra = ZebraTime();
