@@ -18,9 +18,10 @@ Our increasingly global world needs to keep these two notions
 distinct in people's minds, by using different notations: 
 
 Zebra Time replaces the o'clock with 'hours', just like Zulu 
-time does. It a;sp replaces the hour number with a _letter_. 
-02:00 hours Z becomes B:00 hours, while the time of day might 
-be any time, depending on where you are at B:00 hours. 
+time does. But it also replaces the hour number with a _letter_. 
+04:00 hours Z becomes D:00 hours. The time of day might 
+be any time, such as 6:00 o'clock, depending on where you are 
+at B:00 hours. 
 
 This project provides the software for an easier way to relate 
 and manipulate both kinds of time, or both people and computers.  
