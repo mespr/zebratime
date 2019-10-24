@@ -1,5 +1,5 @@
 # Zebra Time
-is Zulu time for humans; UTC we can read and speak.
+This is Zulu time for humans; UTC we can read and speak.
 
 'Time' means both where the sun is relative to you - which is your 
 local time, and a moment in the progression of time - UTC, the 
