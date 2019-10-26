@@ -170,7 +170,7 @@ console.log("zebra time is "+zebra.precision("second"));
 myElement.append(ZebraTime().timeElement());
         </code></pre>
     </section>
-    <section id="wall-clock-title" class="page-title"><span>clock</span></section>
+    <section id="wall-clock-title" class="page-title"><span>clocks</span></section>
     <section id="clock" class="page horizontal">
         <section class="page-box" style="
             background-image:url(img/zebra_clock.png);
@@ -194,6 +194,17 @@ myElement.append(ZebraTime().timeElement());
             confusing.</p>
         </section>
     </section>
+    <section id="mapclock" class="page horizontal">
+        <section class="page-box" style="
+            flex-grow:0.5;
+            min-height:80px;
+            background-color:#475e8c;
+            margin:30px 30px 0 0">
+        </section>
+        <section class="page-box">
+            a map
+        </section>
+    </section>
 </section>
 <script type="module">
     import ZebraTime from "./zebratime.js";
@@ -207,6 +218,9 @@ myElement.append(ZebraTime().timeElement());
         document.querySelector(".zulu-activity").textContent = activity(zebra.date.getUTCHours());
         document.querySelector(".local-ampm-hour").textContent = ampm(zebra.date.getHours());
         document.querySelector(".computer-time").textContent = zebra.date.getTime();
+
+        // mapclock
+        document.querySelector("#mapclock section:first-child").append(zebra.mapElement());
     });
     function ampm(h) {
         let ampm = h>11?"PM":"AM";
