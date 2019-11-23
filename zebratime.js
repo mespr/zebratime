@@ -33,6 +33,10 @@ class ZebraClass {
         callback();
         setTimeout(this.tick.bind(this,callback),1000-(this.date.getTime()%1000));
     }
+    formatTime(n) {
+        return n<10?"0"+n:n.toString()
+    }
+
     timeElement() {
         let elem = document.createElement("div");
         this.tick(()=>{
@@ -41,79 +45,46 @@ class ZebraClass {
         return elem;
     }
 
-    _draw(parentElem) {
-        this.parentElem = parentElem;
-        this.timeElem = document.createElement('div');
-        this.mapElem = document.createElement('div');
-        this.timeElem.id = "zebra-time-clock";
-        this.mapElem.id = "zebra-time-map";
-        this.parentElem.append(this.timeElem);
-        this.parentElem.append(this.mapElem);
-        let img = document.createElement("img");
+    mapElement() {
+        let elem = document.createElement('div');
+        elem.id = "zebra-time-map";
+        elem.display="flex";
+        elem.style.backgroundImage="url(img/zebra_worldstrip.png)";
+        elem.style.backgroundSize="contain";
+        elem.style.backgroundRepeat="no-repeat";
+        elem.style.width="100%";
+        elem.style.height="100%";
         this.workElemLeft = document.createElement('div');
         this.workElemRight = document.createElement('div');
-        img.src = "/img/worldstrip.png";
-        this.mapElem.appendChild(img);
-        this.mapElem.appendChild(this.workElemLeft);
-        this.mapElem.appendChild(this.workElemRight);
-        this.debugTime = null;
+        elem.appendChild(this.workElemLeft);
+        elem.appendChild(this.workElemRight);
+        return elem;
 
-        setTime.call(this);
-        setInterval(setTime.bind(this),1000);
+        function drawLight(d) {
+            let mapWidth = this.mapElem.offsetWidth;
+            let lightWidth = this.workElemLeft.offsetWidth;
+            let offset = 8;
+            let time = ((d.getUTCHours() + offset) * 60) + d.getUTCMinutes();
+            time = time>=1440?time-1440:time;
+            let time2 = time+1440;
+            time = time>=2880?time-2880:time;
+            this.workElemLeft.style.right=((time/1440)*mapWidth)-lightWidth+"px";
+            this.workElemRight.style.right=((time2/1440)*mapWidth)-lightWidth+"px";
+        }
 
-        function setTime() {
-            let d = new Date();
-            if (this.debugTime) {
-                this.debugTime = new Date(this.debugTime.getTime()+2500000);
-                d = this.debugTime;
+        function highlightMap(hour) {
+            let offset = 12;
+            let workstart = 8;
+            let workspan = 10;
+            let start = offset + (workstart - hour);
+            let end = offset + (workstart+workspan - hour);
+            if (start < 0) start += 23;
+            if (end > 23) end -= 23;
+            for (let i=0;i<this.mapElem.children.length;i++) {
+                this.mapElem.children[i].classList.remove('work');
+                if ((start < end) && (i >= start && i < end)) this.mapElem.children[i].classList.add('work');
+                if ((start > end) && (i >= start || i < end)) this.mapElem.children[i].classList.add('work');
             }
-            let zhour = d.getUTCHours();
-            if (zhour > 23) zhour -= 23;
-            zhour -= 12; // shift A from midnight to noon
-            this.timeElem.innerHTML = String.fromCharCode(77+zhour)+":"+this.formatTime(d.getUTCMinutes())+":"+this.formatTime(d.getUTCSeconds());
-            this.drawLight(d);
-
-            this.timeElem.addEventListener('click',()=>{
-                this.debugTime = new Date();
-            })
-        }
-    }
-    formatTime(n) {return n<10?"0"+n:n.toString()}
-
-    drawLight(d) {
-        let mapWidth = this.mapElem.offsetWidth;
-        let lightWidth = this.workElemLeft.offsetWidth;
-        let offset = 8;
-        let time = ((d.getUTCHours() + offset) * 60) + d.getUTCMinutes();
-        time = time>=1440?time-1440:time;
-        let time2 = time+1440;
-        time = time>=2880?time-2880:time;
-        this.workElemLeft.style.right=((time/1440)*mapWidth)-lightWidth+"px";
-        this.workElemRight.style.right=((time2/1440)*mapWidth)-lightWidth+"px";
-    }
-
-    highlightMap(hour) {
-        let offset = 12;
-        let workstart = 8;
-        let workspan = 10;
-        let start = offset + (workstart - hour);
-        let end = offset + (workstart+workspan - hour);
-        if (start < 0) start += 23;
-        if (end > 23) end -= 23;
-        for (let i=0;i<this.mapElem.children.length;i++) {
-            this.mapElem.children[i].classList.remove('work');
-            if ((start < end) && (i >= start && i < end)) this.mapElem.children[i].classList.add('work');
-            if ((start > end) && (i >= start || i < end)) this.mapElem.children[i].classList.add('work');
-        }
-    }
-    drawMap() {
-        // add letters
-//        let letters = "OPQRSTUVWXABCDEFGHIJKLMN";
-        let letters = "LKJIHGFEDCBAXWVUTSRQPONM";
-        for (let i = 0; i < letters.length; i++) {
-            let letterElem = document.createElement("span");
-            letterElem.innerHTML = letters.charAt(i);
-            this.mapElem.appendChild(letterElem);
         }
     }
 }
