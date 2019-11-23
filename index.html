@@ -117,45 +117,39 @@
 </section>
 <section id="content-container">
     <section id="home" class="page">
-        <p>Why is it <span class="zebra-hour strong"></span> hour?
-            Because it's <span class="zulu-hour strong"></span> o'clock
-            GMT (or Zulu Time).</p>
-        <p>The <span class="strong">time </span> can mean either:
-            where the sun is relative to you, <span class="strong">or </span>
-            a moment in the progression of time, based on the events that
-            have happened in the world vs. those to come.  The sun is in
-            a different place relative to you, all around the world. Yet it
-            is always the same moment in time - the same Zulu Time, everywhere
-            in the world.</p>
-        <p>In our increasingly global world, we need to be able to keep these
-            two concepts distinct.  People can do this better when they use very
-            different notations for the differing concepts for the two: local
-            time and Zebra time.</p>
-        <p> Zebra time replaces the local time word "o'clock" with "hours",
-            just like Zulu time does. But it also replaces numbers with letters,
-            so that 5:00 hours Z becomes D:00 hours, while the local time might
-            be 7:00 o'clock.</p>
-        <p><span class="zulu-ampm-hour strong"></span> means something to you.
+        <p>Why is it <span class="zebra-hour strong"></span> o'clock?
+            Because it is <span class="zebra-hour strong"></span> o'clock
+            everywhere.</p>
+        <p>Clocks emerged locally, based on the position of the sun. Universal time,
+            Greenwich Mean Time, was invented as we globalized and needed
+            to label a shared moment unrelated to lunch. But Universal Time (UTC)
+            relies on the same syntax as local time, making
+            it unnatural to distinguish these different meanings to the question,
+            what time is it?</p>
+        <p><span class="zulu-ampm-hour"></span> means something to you.
             I'm guessing <span class="zulu-activity"></span>. Your local time is
             <span class="local-ampm-hour"></span>. If you happen to live in London that
-            might be the same or one hour off. If you happen to live in Sydney it's
+            might be the same or an hour off. If you happen to live in Sydney it's
             going to be some 9 or 10 hours different.</p>
         <p>We are inured to how complicated this is. "Is that your 2 o'clock or mine?"
             Meanwhile, nearly all computers everywhere agree that now is
-        <span class="computer-time strong"></span>.</p>
-        <p>If you want to place a call from Los Angeles to Berlin, you might search
-            the internet to discover what time it is for the other person. Computer
-            processing hides the complexity of calculating offsets for both locations and
-            possible daylight saving rules. With zebra time we dispense with that.
-            It is the same point in time everywhere, yet we can also still plan dinner
-            at 7:30 with our family.</p>
-    </section>    
+            <span class="computer-time strong"></span>.</p>
+        <p>With Zebra Time you can develop a sense of
+            <span class="zebra-hour"></span>:00 that is distinct from
+            <span class="local-hour"></span>:00. Have lunch at 12:30 but schedule
+            a call with Helsinki and Hanoi at K:30.</p>
+        <p>Mechanically, Zebra Time is UTC with a letter representing the hour
+            rather than a number. That's useful for computer programmers, but
+            somewhat irrelevant. Tell me it's <span class="zebra-hour"></span>
+            o'clock, and I can agree with you. Tell me it's <span class="local-hour"></span>
+            o'clock, and I have to ask where.</p>
+    </section>
 
     <section id="code-title" class="page-title"><span>code</span></section>
     <section id="code" class="page">
-        <p>ZebraTime is free and open source. In the loftiest of ideals, it
+        <p>ZebraTime is open source from concept to code. It
         is a project to give people a simple language for universal time so
-        we can stop with the timezone date math.</p>
+        we can dispense with the timezone date math.</p>
         <p>This site and a basic ES6 module are available on
             <a href="https://github.com/mespr/zebratime">github.com/mespr/zebratime</a>
             and npmjs.com</p>
@@ -203,6 +197,7 @@ myElement.append(ZebraTime().timeElement());
             confusing.</p>
         </section>
     </section>
+    <!--
     <section id="mapclock" class="page horizontal">
         <section class="page-box" style="
             flex-grow:0.5;
@@ -214,6 +209,7 @@ myElement.append(ZebraTime().timeElement());
             a map
         </section>
     </section>
+    -->
 </section>
 <script type="module">
     import ZebraTime from "./zebratime.js";
@@ -221,20 +217,25 @@ myElement.append(ZebraTime().timeElement());
         let headerTime = document.getElementById("header-time");
         let zebra = ZebraTime();
         headerTime.append(zebra.timeElement());
-        document.querySelector(".zebra-hour").textContent = zebra.hour;
-        document.querySelector(".zulu-hour").textContent = zebra.date.getUTCHours();
-        document.querySelector(".zulu-ampm-hour").textContent = ampm(zebra.date.getUTCHours());
-        document.querySelector(".zulu-activity").textContent = activity(zebra.date.getUTCHours());
-        document.querySelector(".local-ampm-hour").textContent = ampm(zebra.date.getHours());
-        document.querySelector(".computer-time").textContent = zebra.date.getTime();
+        document.querySelectorAll(".zebra-hour").forEach((e)=>e.textContent = zebra.hour);
+        document.querySelectorAll(".zulu-hour").forEach((e)=>e.textContent = zebra.date.getUTCHours());
+        document.querySelectorAll(".zulu-ampm-hour").forEach((e)=>e.textContent = ampm(zebra.date.getUTCHours()));
+        document.querySelectorAll(".zulu-activity").forEach((e)=>e.textContent = activity(zebra.date.getUTCHours()));
+        document.querySelectorAll(".local-hour").forEach((e)=>e.textContent = twelve(zebra.date.getHours()));
+        document.querySelectorAll(".local-ampm-hour").forEach((e)=>e.textContent = ampm(zebra.date.getHours()));
+        document.querySelectorAll(".computer-time").forEach((e)=>e.textContent = zebra.date.getTime());
 
         // mapclock
         document.querySelector("#mapclock section:first-child").append(zebra.mapElement());
     });
-    function ampm(h) {
-        let ampm = h>11?"PM":"AM";
+    function twelve(h) {
         h = h > 12?h-12:h;
         if (h === 0) h = 12;
+        return h;
+    }
+    function ampm(h) {
+        let ampm = h>11?"PM":"AM";
+        h = twelve(h);
         return h+ampm;
     }
     function activity(h) {
