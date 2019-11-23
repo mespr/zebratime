@@ -1,6 +1,6 @@
 {
   "name": "zebratime",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Zulu time for humans",
   "main": "zebratime.js",
   "scripts": {
