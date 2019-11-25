@@ -239,6 +239,7 @@ myElement.append(ZebraTime().timeElement());
             <p>This is a widget available in the ZebraTime module. It shows the
                 up-and-about window as the day evolves. The letters read left to right
                 and roughly indicate midday.</p>
+            <p><pre><code>div.append(zebra.mapElement());</code></pre></p>
             <p>This doesn't show where sunlight is. To do so one would need to
                 adjust for the spin of the earth. The top of the map gets a small window
                 of daylight in winter. But again, not the point. If you live in
@@ -261,7 +262,9 @@ myElement.append(ZebraTime().timeElement());
         document.querySelectorAll(".computer-time").forEach((e)=>e.textContent = zebra.date.getTime());
 
         // mapclock
-        document.querySelector("#mapclock section:first-child").append(zebra.mapElement());
+        let mapElem = zebra.mapElement();
+        mapElem.style.borderRadius = "12px";
+        document.querySelector("#mapclock section:first-child").append(mapElem);
     });
     function twelve(h) {
         h = h > 12?h-12:h;

@@ -52,7 +52,7 @@ class ZebraClass {
         elem.style.position="relative";
         elem.style.backgroundImage="url("+this.images.world+")";
         elem.style.backgroundSize="100% 100%";
-        elem.style.backgroundColor=bgColor || "#475e8c";
+        elem.style.backgroundColor=bgColor || "#31313F" || "#475e8c";
         elem.style.backgroundRepeat="no-repeat";
         elem.style.width="100%";
         elem.style.height="100%";
@@ -77,45 +77,16 @@ class ZebraClass {
             workElem[e].style.height="100%";
             workElem[e].style.opacity="0.3";
             workElem[e].style.left="100%";
-            workElem[e].style.background="linear-gradient(to right, transparent, green 15% 85%, transparent 100%)";
+            workElem[e].style.background="linear-gradient(to right, transparent, "+(fgColor||"#576efc")+" 15% 85%, transparent 100%)";
             elem.append(workElem[e]);
         }
         this.tick(()=>{
             let time = (this.date.getUTCHours() * 60) + this.date.getUTCMinutes();
-            workElem.left.style.left = ((1440-time)/1440)*100+"%";
-            workElem.right.style.left = (time/1440)*100+"%";
+            workElem.left.style.left = (((1440-time)/1440)*100)-20+"%";
+            workElem.right.style.left = ((time/1440)*100)-20+"%";
         });
 
         return elem;
-
-
-        function drawLight(d) {
-            if (elem.offsetWidth === 0) setTimeout()
-            let mapWidth = elem.offsetWidth;
-            let lightWidth = workElemLeft.offsetWidth;
-            let offset = 8;
-            let time = ((d.getUTCHours() + offset) * 60) + d.getUTCMinutes();
-            time = time>=1440?time-1440:time;
-            let time2 = time+1440;
-            time = time>=2880?time-2880:time;
-            workElemLeft.style.right=((time/1440)*mapWidth)-lightWidth+"px";
-            workElemRight.style.right=((time2/1440)*mapWidth)-lightWidth+"px";
-        }
-
-        function highlightMap(hour) {
-            let offset = 12;
-            let workstart = 8;
-            let workspan = 10;
-            let start = offset + (workstart - hour);
-            let end = offset + (workstart+workspan - hour);
-            if (start < 0) start += 23;
-            if (end > 23) end -= 23;
-            for (let i=0;i<this.mapElem.children.length;i++) {
-                this.mapElem.children[i].classList.remove('work');
-                if ((start < end) && (i >= start && i < end)) this.mapElem.children[i].classList.add('work');
-                if ((start > end) && (i >= start || i < end)) this.mapElem.children[i].classList.add('work');
-            }
-        }
     }
     get images() {
         return {
