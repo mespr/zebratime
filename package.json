@@ -4,6 +4,7 @@
   "description": "Zulu time for humans",
   "main": "zebratime.js",
   "scripts": {
+    "start": "node server.mjs",
     "test": "node --experimental-modules test/test.mjs"
   },
   "repository": {
